@@ -1,0 +1,93 @@
+<ion-header>
+    <div text-center>
+        <h3>Registrar Usuario</h3>
+      </div>
+        <ion-avatar class="avatar">
+        <img  src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+</ion-header>
+
+<ion-content>
+         
+      <ion-content padding="true">
+        <form [formGroup]="formgroup" (ngSubmit)="onSubmit(formgroup.value)">
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input formControlName="email"></ion-input>
+          </ion-item>
+      
+              <div *ngIf="submitted && frm.email.errors" class="invalid-feedback">
+                <ion-item *ngIf="frm.email.errors.required">
+                    <p style="color:red">El correo es requerido!</p>
+                </ion-item>
+                <ion-item *ngIf="frm.email.errors.email">
+                    <p style="color:red">El correo electrónico no es valido!</p>
+                </ion-item>
+              </div>		
+      
+              <ion-item>
+                  <ion-label position="floating">Nombre</ion-label>
+                  <ion-input formControlName="nombre"></ion-input>
+                </ion-item>
+            
+                    <div *ngIf="submitted && frm.nombre.errors" class="invalid-feedback">
+                      <ion-item *ngIf="frm.nombre.errors.required">
+                          <p style="color:red">El nombre es requerido!</p>
+                      </ion-item>
+                      <ion-item *ngIf="frm.nombre.errors.minlength">
+                          <p style="color:red">El Nombre tiene menos de 6 caracteres!</p>
+                      </ion-item>
+                    </div>
+
+              <ion-item>
+                  <ion-label position="floating">Telefono</ion-label>
+                  <ion-input type="number"formControlName="telefono"></ion-input>
+               </ion-item> 
+               <div *ngIf="submitted && frm.telefono.errors" class="invalid-feedback">
+                  <ion-item *ngIf="frm.telefono.errors.required">
+                      <p style="color:red">El Telefono es requerido!</p>
+                  </ion-item>
+                  <ion-item *ngIf="frm.telefono.errors.minlength">
+                      <p style="color:red">El Telefono tiene menos de 6 caracteres!</p>
+                  </ion-item>
+                </div>
+
+                <ion-item>
+                <ion-label position="floating">Ciudad</ion-label>
+                  <ion-input type="text"formControlName="ciudad"></ion-input>
+               </ion-item> 
+               <div *ngIf="submitted && frm.ciudad.errors" class="invalid-feedback">
+                  <ion-item *ngIf="frm.ciudad.errors.required">
+                      <p style="color:red">La ciudad es requerida!</p>
+                  </ion-item>
+                 
+                </div>
+          <ion-item>
+            <ion-label position="floating">Clave</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+      
+              <div *ngIf="submitted && frm.password.errors" class="invalid-feedback">
+                <ion-item *ngIf="frm.password.errors.required">
+                    <p style="color:red">La clave es requerida</p>
+                </ion-item>
+                <ion-item *ngIf="frm.password.errors.minlength">
+                    <p style="color:red">La clave debe contener 6 caracteres minimo!</p>
+                </ion-item>
+              </div>
+      
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-button size="large" type="submit"  expand="block" [disabled]="!formgroup.valid">Ingresar Registro</ion-button>   
+              </ion-col>
+              <ion-col>
+             <ion-button class="signup-btn" fill="clear" [routerLink]="['/login']">
+              Ingresar Login</ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </form>
+      </ion-content>
+
+</ion-content>

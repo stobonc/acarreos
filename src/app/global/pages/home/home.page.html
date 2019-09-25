@@ -1,0 +1,29 @@
+<ion-header>
+  <script src="https://maps.google.com/maps/api/js?key=AIzaSyC8MicK_5b_60RcCKI9I5goFlXE5sPQrO0"></script>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+      <ion-list-header>
+       <ion-label><h4>Servicios Disponible</h4></ion-label>
+      </ion-list-header>
+  
+      <ion-item *ngFor="let item of result" detail>
+        <ion-icon  slot="start" name="md-locate"></ion-icon>
+      <br>Servicio Nro:{{item.id}}<br/>
+          Origen:{{item.origen}}<br />
+          Destino:{{item.destino}}
+        </ion-item>
+     </ion-list>
+     <div id="map_canvas">
+holas
+     </div>
+  </ion-content>
+  
+

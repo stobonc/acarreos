@@ -1,0 +1,49 @@
+<ion-content>
+   
+  <ion-grid>
+    <ion-row color="primary" justify-content-center>
+      <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+        <div text-center>
+          <h3>Registrar Usuario</h3>
+        </div>
+        <ion-avatar class="avatar">
+          <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+        </ion-avatar>
+        <div>
+       
+          <ion-item>
+              <ion-label position="floating">Correo</ion-label>
+            <ion-input name="correo" type="email" [(ngModel)]="registroData.correo"></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label position="floating">Nombre</ion-label>
+            <ion-input name="nombre"  type="text" [(ngModel)]="registroData.nombre"></ion-input>
+          </ion-item>
+           <ion-item>
+              <ion-label position="floating">Telefono</ion-label>
+            <ion-input name="telefono"  type="text"  [(ngModel)]="registroData.telefono"></ion-input>
+          </ion-item> 
+          <ion-item>
+              <ion-label position="floating">Ciudad</ion-label>
+            <ion-input name="ciudad"  type="text"[(ngModel)]="registroData.ciudad"></ion-input>
+          </ion-item> 
+          <ion-item>
+              <ion-label position="floating">Clave</ion-label>
+            <ion-input name="clave"  type="password"[(ngModel)]="registroData.password"></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label position="floating">ConfirmarClave</ion-label>
+            <ion-input name="confirmarClave"  type="password" [(ngModel)]="registroData.confirmarPassword"></ion-input>
+          </ion-item>
+                        
+        </div>
+      <div>
+          <ion-button full (click)="registrarUsuario()" size="large" type="submit"  expand="block">Ingresar Registro</ion-button>
+        </div>
+        <ion-button class="signup-btn" fill="clear" [routerLink]="['/login']">Ingresar</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
+
