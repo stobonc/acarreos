@@ -8,8 +8,8 @@
 </ion-header>
 
 <ion-content>
-         
-      <ion-content padding="true">
+  
+      <ion-content padding="true" justify-content-center>
         <form [formGroup]="formgroup" (ngSubmit)="onSubmit(formgroup.value)">
           <ion-item>
             <ion-label position="floating">Email</ion-label>
@@ -36,6 +36,19 @@
                       </ion-item>
                       <ion-item *ngIf="frm.nombre.errors.minlength">
                           <p style="color:red">El Nombre tiene menos de 6 caracteres!</p>
+                      </ion-item>
+                    </div>
+
+                    <ion-item>
+                      <ion-label position="floating">Cedula</ion-label>
+                      <ion-input type="number"formControlName="cedula"></ion-input>
+                   </ion-item> 
+                   <div *ngIf="submitted && frm.cedula.errors" class="invalid-feedback">
+                      <ion-item *ngIf="frm.cedula.errors.required">
+                          <p style="color:red">La cedula es requerida!</p>
+                      </ion-item>
+                      <ion-item *ngIf="frm.cedula.errors.minlength">
+                          <p style="color:red">la cedula tiene menos de 5 caracteres!</p>
                       </ion-item>
                     </div>
 

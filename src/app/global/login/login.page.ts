@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { RequestOptions, Headers, Http } from '@angular/http';
 import { Validators,FormBuilder,ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ConstantPool } from '@angular/compiler';
 
 
 @Component({
@@ -65,7 +66,8 @@ export class LoginPage {
      const info=JSON.parse(data);
     // console.log(info);
      console.log(info['id']);
-
+     
+    console.log(info['estado']);
      if(info['estado']=='0'){
      
            this.router.navigateByUrl('/home');
