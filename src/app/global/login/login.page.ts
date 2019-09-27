@@ -64,7 +64,7 @@ export class LoginPage {
      //console.log(data);
 
      const info=JSON.parse(data);
-    // console.log(info);
+     console.log(info);
      console.log(info['id']);
      
     console.log(info['estado']);
