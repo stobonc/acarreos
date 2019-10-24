@@ -1,0 +1,52 @@
+<ion-header>
+  <div text-center>
+    <ion-toolbar class="new-background-color">
+      <ion-title>Registro Solicitud</ion-title>
+    </ion-toolbar>
+    </div>
+     
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="formgroup" (ngSubmit)="onSubmit(formgroup.value)">
+   <div>
+    <ion-item>
+      <ion-label position="floating">*Origen del Servicio</ion-label>
+      <ion-input formControlName="origenServ"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label  position="floating">*Destino del Servicio</ion-label>
+      <ion-input type="text" formControlName="destinoServ"></ion-input> 
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">*Descripcion del Servicio</ion-label>
+      <ion-textarea rows="6" cols="20" formControlName="descripcionServ"></ion-textarea>
+    
+    </ion-item>
+    <ion-chip>
+      <ion-avatar>
+        <img src="https://cdn1.imggmi.com/uploads/2019/10/12/0376074a779cf4595019b285a87f8102-full.png">
+      </ion-avatar>
+      <ion-label>Subir Foto</ion-label>
+    </ion-chip>
+        <div *ngIf="submitted && frm.origenServ.errors" class="invalid-feedback">
+          <ion-item *ngIf="frm.origenServ.errors.required">
+              <p style="color:red">El correo es requerido!</p>
+          </ion-item>
+          <ion-item *ngIf="frm.origenServ.errors.email">
+              <p style="color:red">El correo electrónico no es valido!</p>
+          </ion-item>
+        </div>	
+      </div>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-button shape="round" color="danger" size="small" type="submit"  expand="block" [disabled]="!formgroup.valid">Ingresar Solicitud</ion-button>   
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        
+        </form>
+
+</ion-content>

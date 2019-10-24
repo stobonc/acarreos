@@ -1,0 +1,28 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-title>{{ origenServ}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+ 
+
+            
+  <ion-searchbar  cancel-button-icon='md-arrow-back' [(ngModel)]="search" #searchInput (ionChange)="searchDireccion()"Placeholder="Direccion Origen" autofocus="true" ></ion-searchbar>
+
+<ion-list>
+  <div  *ngFor="let result of searchResult">
+
+    <ion-item name="dato" (click)="salirConArg(result)" color="light" expand="full" fill="solid">
+      {{ result.description}}
+    </ion-item>
+    
+  </div> 
+
+</ion-list>
+
+<ion-button expand ="full" (click)="salirSinArg()" >Salir sin argumento</ion-button>
+ <ion-button expand="full" (click)="salirConArg()" >Salir CON argumento</ion-button>
+
+
+</ion-content>

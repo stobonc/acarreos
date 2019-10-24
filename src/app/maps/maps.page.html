@@ -8,28 +8,28 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-card>
-    <ion-item>
-      <ion-icon name="pin" slot="start"></ion-icon>
-      <ion-label>ion-item in a card, icon left, button right</ion-label>
-      <ion-button fill="outline" slot="end">View</ion-button>
-    </ion-item>
-  
-    <ion-card-content>
-      This is content, without any paragraph or header tags,
-      within an ion-card-content element.
-    </ion-card-content>
-  </ion-card>
 <ion-content>
-  
+    <ion-searchbar [(ngModel)]="search" (ionChange)="searchChange()"Placeholder="para donde"></ion-searchbar>
+  <form [formGroup]="formgroup" (ngSubmit)="initMap(formgroup.value)">
+  <ion-item>
+      <div id="floating-panel">
+          <input id="address" type="textbox" (click)="initMap()"value="{{origenServ}}">
+          <input id="submit" type="button" value="Geocode"  (click)="initMap()">
+         
+        </div>
+        <ion-label position="floating">*Origen del Servicio</ion-label>
+      <ion-input formControlName="origenServ"></ion-input>
+</ion-item>
   <ion-fab vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button (click)="geolocateMe()" color="secondary">
       <ion-icon name="locate"></ion-icon>
     </ion-fab-button>
     
   </ion-fab>
-  <google-map [mapOptions]="mapOptions"></google-map>
-
+  <ion-button shape="round" color="danger" size="small" type="submit"  expand="block" >Ingresar Solicitud</ion-button>
+</form>
+<google-map [mapOptions]="mapOptions"></google-map>
+  
 </ion-content>
 
 

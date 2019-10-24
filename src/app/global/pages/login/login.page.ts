@@ -1,70 +1,96 @@
-import { Component, OnInit } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { Component} from '@angular/core';
+import { NavController, AlertController } from '@ionic/angular';
+import{HttpClient, HttpHeaders }from '@angular/common/http'; 
+import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { Validators,FormBuilder,ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MenuController } from '@ionic/angular';
+
+
+
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
-  styleUrls: [
-    './styles/login.page.scss'
-  ]
+  styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
-  loginForm: FormGroup;
+export class LoginPage {
+  submitted=false; 
+  formgroup:FormGroup;
+  
+  constructor(public navCtrl: NavController,public formBuilder:FormBuilder, private router:Router,public httpClient: HttpClient,
+    private alertController:AlertController) {
+   
+   }
 
-  validation_messages = {
-    'email': [
-      { type: 'required', message: 'Email is required.' },
-      { type: 'pattern', message: 'Enter a valid email.' }
-    ],
-    'password': [
-      { type: 'required', message: 'Password is required.' },
-      { type: 'minlength', message: 'Password must be at least 5 characters long.' }
-    ]
-  };
+  ngOnInit() {
+    this.formgroup = this.formBuilder.group({
+      email: ['', [Validators.required,Validators.email]],
+      password: ['', [Validators.required,Validators.minLength(6),Validators.pattern('^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$')]]
+  }, {});
+  }
 
-  constructor(
-    public router: Router,
-    public menu: MenuController
-  ) {
-    this.loginForm = new FormGroup({
-      'email': new FormControl('test@test.com', Validators.compose([
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-      ])),
-      'password': new FormControl('', Validators.compose([
-        Validators.minLength(5),
-        Validators.required
-      ]))
+  async onSubmit(value: any): Promise<void>{
+    this.submitted = true;
+
+    // Stop if the form validation has failed
+    if (this.formgroup.invalid) {
+        return;
+    }
+            
+    //  if(this.registroData.correo !="" && this.registroData.nombre !=""
+     // && this.registroData.telefono !="" && this.registroData.ciudad !="" && this.registroData.password !="" ){
+   
+    //let url:string="https://cors-anywhere.herokuapp.com/http://acarreos.masalcance.com/user/show";
+    let url:string="http://127.0.0.1:8000/user/show";
+
+      var headers = new HttpHeaders();
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/json');
+      headers.append('Access-Control-Allow-Origin', '*');
+
+    let dataPost={
+      'user':this.formgroup.get('email').value,
+      'password':this.formgroup.get('password').value
+
+    };
+    
+    let data:Observable<any>= this.httpClient.post(url,dataPost,{headers:headers, responseType: 'text'})
+    data.subscribe(async data => {
+     console.log(data);
+
+     const info=JSON.parse(data);
+    // console.log(info);
+     console.log(info['id']);
+     
+    console.log(info['estado']);
+
+    if(info['estado']=='1'){
+     
+        const alert = await this.alertController.create({
+        header:'Ingresar',
+        message:'El Usuario o Contraseña no son correctos o el usuario esta inactivo',
+        buttons:['Ok']
+        
+         });
+       
+       await alert.present();
+
+      }else{
+        this.router.navigateByUrl('/solicitud');
+
+      }
+    
     });
-  }
 
-  ngOnInit(): void {
-    this.menu.enable(false);
-  }
+     this.submitted = false;
+     this.formgroup.reset();
+   
+}
 
-  doLogin(): void {
-    console.log('do Log In');
-    this.router.navigate(['/home']);
-  }
-
-  goToForgotPassword(): void {
-    console.log('redirect to forgot-password page');
-  }
-
-  doFacebookLogin(): void {
-    console.log('facebook login');
-    this.router.navigate(['app/categories']);
-  }
-
-  doGoogleLogin(): void {
-    console.log('google login');
-    this.router.navigate(['app/categories']);
-  }
-
-  doTwitterLogin(): void {
-    console.log('twitter login');
-    this.router.navigate(['app/categories']);
-  }
+  get frm() { return this.formgroup.controls; } 
+   
 }

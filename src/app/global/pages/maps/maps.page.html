@@ -1,0 +1,37 @@
+
+<ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Maps & Geolocation</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+            
+      <!--<ion-searchbar [(ngModel)]="search" (ionChange)="searchDireccion()"Placeholder="Direccion Origen" ></ion-searchbar>-->
+
+<ion-searchbar cancel-button-icon='md-arrow-back' [(ngModel)]="search" (click)="searchDirOrigen()"Placeholder="Direccion Origen" ></ion-searchbar>
+ <!-- <ion-list>
+      <div  *ngFor="let result of searchResult">
+
+        <ion-item name="dato" (click)="pasarDato(result)" color="light" expand="full" fill="solid">
+          {{ result.description}}
+        </ion-item>
+        
+      </div> 
+    
+  </ion-list> -->
+    <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+      <ion-fab-button (click)="geolocateMe()" color="secondary">
+        <ion-icon name="locate"></ion-icon>
+      </ion-fab-button>
+      
+    </ion-fab>
+    <ion-button shape="round" color="danger" size="small" type="submit" (click)='abrirModal()' expand="block" >Ingresar Solicitud</ion-button>
+  <!--</form>-->
+  
+  <google-map [mapOptions]="mapOptions"></google-map>
+
+  </ion-content>

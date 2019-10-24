@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { RequestOptions,Headers } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { AlertController, NavController } from '@ionic/angular';
@@ -45,12 +44,18 @@ export class RegistrousuarioPage implements OnInit {
               //      if(this.registroData.correo !="" && this.registroData.nombre !=""
               //      && this.registroData.telefono !="" && this.registroData.ciudad !="" && this.registroData.password !="" ){
 
-            let url:string="http://127.0.0.1:8000/user/";
+            //let url:string="https://cors-anywhere.herokuapp.com/http://acarreos.masalcance.com/user";
 
-            let headers = new Headers();
-            headers.append("Accept", 'application/json');
-            headers.append('Content-Type', 'application/json' );
-            let requestOptions = new RequestOptions({ headers: headers });
+            let url:string="http://127.0.0.1:8000/user";
+
+            var headers = new HttpHeaders();
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/json');
+      headers.append('Access-Control-Allow-Origin', '*');
+      headers.append('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+      headers.append('Access-Control-Allow-Headers', 'x-id');
+
+
 
             let dataPost={
               'user':this.formgroup.get('email').value,
@@ -62,23 +67,39 @@ export class RegistrousuarioPage implements OnInit {
               'password':this.formgroup.get('password').value
 
             };
-            let data:Observable<any>= this.httpClient.post(url,dataPost, {responseType: 'text'})
-            data.subscribe(data => {
+            let data:Observable<any>= this.httpClient.post(url,dataPost, {headers:headers,responseType: 'text'})
+            data.subscribe(async data => {
             
               console.log(data);
+              const info=JSON.parse(data);
+              console.log(info['code']);
+
+              console.log(info['estado']);
+                if(info['estado']=='1'){
+     
+                  const alert = await this.alertController.create({
+                    header:'Registo de Usuario',
+                    message:"Usuario Creado Correctamente",
+                    buttons:['Ok']  
+                  })
+                    await alert.present();
+                    this.submitted = false;
+                    this.formgroup.reset();
+                    this.router.navigateByUrl('/login');
+  
+                 }else{
+                    const alert = await this.alertController.create({
+                      header:'Registro usuario',
+                      message:'El registro no se realizo, intenta nuevamente',
+                      buttons:['Ok']  
+                   })
+  
+                      await alert.present();
+
+                  }
+              
             });
-
-            this.submitted = false;
-            this.formgroup.reset();
-
-            const alert = await this.alertController.create({
-              header:'Registo de Usuario',
-              message:"Usuario Creado Correctamente",
-              buttons:['Ok']  
-            })
-
-            await alert.present();
-            this.router.navigateByUrl('/login');
+       
         }
 
         

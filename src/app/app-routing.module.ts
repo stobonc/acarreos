@@ -25,15 +25,19 @@ const routes: Routes = [
  
   { path: 'global', redirectTo: 'walkthrough', pathMatch: 'full' },
   { path: 'walkthrough', loadChildren: './walkthrough/walkthrough.module#WalkthroughPageModule' },
-  { path: 'auth/login', loadChildren: './global/pages/login/login.module#LoginPageModule' },
-  {path:'home1', loadChildren: './global/pages/categories/categories.module#CategoriesPageModule'},
-  { path: 'home', loadChildren: './global/pages/home/home.module#HomePageModule' },
-  { path: 'maps', loadChildren: './maps/maps.module#MapsPageModule' },
-  { path: 'mapas', loadChildren: './global/mapas/mapas.module#MapasPageModule' },
-  { path: 'login', loadChildren: './global/login/login.module#LoginPageModule' },
+ // { path: 'auth/login', loadChildren: './global/pages/login/login.module#LoginPageModule' },
+  //{path:'home1', loadChildren: './global/pages/categories/categories.module#CategoriesPageModule'},
+  //{ path: 'home', loadChildren: './global/pages/home/home.module#HomePageModule' },
+  //{ path: 'maps', loadChildren: './global/pages/maps/maps.module#MapsPageModule' },
+ // { path: 'maps/:origenServ', loadChildren: './maps/maps.module#MapsPageModule' },
+  { path: 'login', loadChildren: './global/pages/login/login.module#LoginPageModule' },
   { path: 'registro', loadChildren: './global/pages/registro/registro.module#RegistroPageModule' },
   { path: 'prueba', loadChildren: './global/pages/prueba/prueba.module#PruebaPageModule' },
   { path: 'registrousuario', loadChildren: './global/pages/registrousuario/registrousuario.module#RegistrousuarioPageModule' },
+  { path: 'solicitud', loadChildren: './global/pages/solicitud/solicitud.module#SolicitudPageModule' },
+  { path: 'ejm', loadChildren: './global/pages/ejm/ejm.module#EjmPageModule' },
+  { path: 'maps', loadChildren: './global/pages/maps/maps.module#MapsPageModule' },
+  //{ path: 'modal-search-ori', loadChildren: './global/pages/modal-search-ori/modal-search-ori.module#ModalSearchOriPageModule' },
  
 ];
 @NgModule({
