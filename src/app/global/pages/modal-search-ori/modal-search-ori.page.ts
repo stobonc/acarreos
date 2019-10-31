@@ -8,8 +8,8 @@ import { ModalController } from '@ionic/angular';
 })
 export class ModalSearchOriPage implements OnInit {
 
-  @Input()nombre;
-  @Input()pais;
+  @Input()opcion;
+
 
   @ViewChild('searchInput') sInput;
   constructor(private modalCtrl:ModalController) { }
@@ -47,9 +47,19 @@ export class ModalSearchOriPage implements OnInit {
    async salirConArg(event:any){
     //console.log(event);
      
+    if(this.opcion ==='1'){
     this.modalCtrl.dismiss({
         'nombreUbicacion':event.description,
         'id':event.place_id,
+        'opcion':'1',
       });
    }
+   else{
+    this.modalCtrl.dismiss({
+      'nombreUbicacion':event.description,
+      'id':event.place_id,
+      'opcion':'2',
+    });
+   }
+  }
 }

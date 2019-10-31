@@ -1,25 +1,30 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { NavController, LoadingController, ModalController } from '@ionic/angular';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Plugins } from '@capacitor/core';
 const { Geolocation } = Plugins;
-
 import { GoogleMapComponent } from '../../../components/google-map/google-map.component';
-//import { map } from 'rxjs/operators';
 import { ModalSearchOriPage } from '../modal-search-ori/modal-search-ori.page';
-import { MyLocation } from '@ionic-native/google-maps';
+
+ /************************************************************************************ */
 
 @Component({
   selector: 'app-maps',
   templateUrl: './maps.page.html',
   styleUrls: ['./maps.page.scss'],
 })
+ /************************************************************************************ */
 export class MapsPage implements OnInit {
+  public searchOrigen:string='';
+  public searchDestino:string='';
 
+  googleAutoComplete= new google.maps.places.AutocompleteService();
+  searchResult=new Array<any>();
   
-  myLatLong = {lat: 6.091372, lng: -75.635300};
+  myLatLong = {lat: 6.260128, lng: -75.574430};
+
 
   @ViewChild(GoogleMapComponent) _GoogleMap: GoogleMapComponent;
   map: google.maps.Map;  
@@ -28,24 +33,25 @@ export class MapsPage implements OnInit {
     center: this.myLatLong,
     zoomControl: true,
     scaleControl: true,
-   // gestureHandling: 'cooperative',
+   gestureHandling: 'cooperative',
 
     // uncomment the following line if you want to remove the default Map controls
     disableDefaultUI: true
   };
   loadingElement: any;
-  origenServicio='';
-  origenServ="";
+   origenServ="";
  // valor: any;
   latitud:any;
   longitud:any;
+  geocoder: any;
  
-
+ /************************************************************************************ */
   constructor(private loadingController: LoadingController,public navCtrl:NavController, public activatedRoute:ActivatedRoute,
-    public formBuilder:FormBuilder, private modalCtrl:ModalController) {
-     
+    public formBuilder:FormBuilder, private modalCtrl:ModalController,private router:Router) {
      
      }
+
+      /************************************************************************************ */
     ngOnInit() {
       
       this._GoogleMap.$mapReady.subscribe(map => {
@@ -55,24 +61,26 @@ export class MapsPage implements OnInit {
       this.createLoader();
       
     }
-  
+   /************************************************************************************ */
     async createLoader() {
       this.loadingElement = await this.loadingController.create({
         message: 'Obteniendo su location...'
       });
     
     }
-  
+   /************************************************************************************ */
     async presentLoader() {
       await this.loadingElement.present();
     }
   
+     /************************************************************************************ */
     async dismissLoader() {
       if (this.loadingElement) {
         await this.loadingElement.dismiss();
       }
     }
   
+     /************************************************************************************ */
     geolocateMe() {
   
      this.presentLoader();
@@ -115,145 +123,115 @@ export class MapsPage implements OnInit {
   
     }
 
-    public search:string='';
-    public dato:string="";
-    googleAutoComplete= new google.maps.places.AutocompleteService();
-    searchResult=new Array<any>();
-   // public origenServ:String='sergio';
-   
-   
-    pasarDato(event:any){
-
-      console.log(event);
-      this.search=event.nombreUbicacion;
-     // this.geolocateMe();
-     
-    }
-
-    
+ 
+  
+  /************************************************************************************ */  
   async searchDirOrigen(){
     const modal=  await this.modalCtrl.create({
       component:ModalSearchOriPage,
       componentProps:{
-        'origenServ':'Ingrese el lugar a buscar',
+        'destinoServ':'Ingrese la direccion de Origen',
+        'opcion':'1'
           }
 
     });
      await modal.present();
 
      const {data}=await modal.onDidDismiss();
-      this.pasarDato(data);
+     const searchOrigen=(data['nombreUbicacion']);
+     const opcion=data['opcion'];
+     var idPlace= data.id;
 
-      var idPlace= data.id;
-     
-      var infowindow = new google.maps.InfoWindow;
-     const st = await this.geocodePlaceId(idPlace);
-      console.log(st);
+     this.pasarDato(searchOrigen,opcion);
+     this.geocodePlaceId(idPlace);
+ 
   }
+/************************************************************************************ */
+async searchDirDestino(){
+  const modal=  await this.modalCtrl.create({
+    component:ModalSearchOriPage,
+    componentProps:{
+      'origenServ':'Ingrese la direccion de Destino',
+      'opcion':'2'
+        }
 
+  });
+   await modal.present();
+
+   const {data}=await modal.onDidDismiss();
+   const searchDestino=(data['nombreUbicacion']);
+   const opcion=data['opcion'];
+   var idPlace= data.id;
+  
+   this.pasarDato(searchDestino,opcion);
+   this.geocodePlaceId(idPlace);
+
+}
+ 
+   /************************************************************************************ */
+   
+   pasarDato(ubicacion,opcion){
+
+      if(opcion =='1'){this.searchOrigen=ubicacion;}
+      if(opcion =='2'){this.searchDestino=ubicacion;}
+    
+   }
+/************************************************************************************ */
   async geocodePlaceId(idPlace) {
    
    var map:google.maps.Map;
    var placeId = idPlace
-       var geocoder = new google.maps.Geocoder();
+  
+   this.geocoder = new google.maps.Geocoder();
 
-    geocoder.geocode({'placeId': placeId}, function(results,status) {
+    this.geocoder.geocode({'placeId': placeId}, (results,status)=> {
 
         if (status === google.maps.GeocoderStatus.OK) { 
-     
-           this.latitud=results[0].geometry.location.lat();
-           this.longitud=results[0].geometry.location.lng();
-           this.myLatLong={latitud:results[0].geometry.location.lat(),longitud:results[0].geometry.location.lng()};
-
-          console.log(this.myLatLong);
-        let st= this.myLatLong;
-        console.log(st);
-      //  return st;
-        //this.geolocate();
-
-        //---------------------
-        var infoWindow:google.maps.Map;
-        Geolocation.getCurrentPosition().then(position => { 
-          
-          const current_location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-          this.map.panTo(current_location);
-          
-          
-          // add a marker
-         // var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+          let position={
+           latitud:results[0].geometry.location.lat(),
+           longitud:results[0].geometry.location.lng()
+          };
          
-          var contenidoStrig ="Usted esta AQUI!";
-          var infoWindow=new google.maps.InfoWindow({
-              content:contenidoStrig
-          });
-  
-        var marker = new google.maps.Marker({
-            position: current_location,
-            title: 'Usted esta AQUI!',
-           // icon:image,
-            animation: google.maps.Animation.DROP
-             
-          });
-          var map: google.maps.Map;
-          marker.addListener('click',function(){
-            infoWindow.open(map,marker);
-          });
-          
-          
-        marker.setMap(this.map);
-  
-        }).catch((error) => {
-          console.log('Error getting current location', error);
-    
-        }).finally(() => {
-          console.log('aqui');
-        });
-        var trafficLayer = new google.maps.TrafficLayer();
-        trafficLayer.setMap(this.map);
-        //-----------------
+        this.geolocate(position.latitud,position.longitud);
 
-
+       
       } else {
         window.alert('Geocoder failed due to: ' + status);
       }
     });
 
-    console.log('esta es '+this.latitud);
-  
   }
     
-
-async geolocate(){
+/************************************************************************************ */
+async geolocate(latitud,longitud){
   
     this.presentLoader();
+    var lat=latitud;
+    var lng=longitud;
       var infoWindow:google.maps.Map;
      Geolocation.getCurrentPosition().then(position => { 
        
-      const current_location = new google.maps.LatLng(this.latitud,this.longitud);
-      console.log(this.latitud,this.longitud);
+      const current_location = new google.maps.LatLng(latitud,longitud);
+     
        this.map.panTo(current_location);
        
        
        // add a marker
-      // var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+      var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
       
-       var contenidoStrig ="Usted esta AQUI!";
+       var contenidoStrig ="Ubicación Origen Servicio ..!";
        var infoWindow=new google.maps.InfoWindow({
            content:contenidoStrig
        });
 
        var marker = new google.maps.Marker({
          position: current_location,
-         title: 'Usted esta AQUItobon!',
-        // icon:image,
-         animation: google.maps.Animation.DROP
-          
+         title: 'Ubicacion Orgien...!',
+        icon:image,
+         animation: google.maps.Animation.DROP,
+           
        });
-       var map: google.maps.Map;
-       marker.addListener('click',function(){
-         infoWindow.open(map,marker);
-       });
-       
+      
        
      marker.setMap(this.map);
 
@@ -266,5 +244,13 @@ async geolocate(){
  
    }
 
+   /**************************************************************** */
 
+   irA_Solicitud(){
+
+    this.router.navigateByUrl('/solicitud');
+    
+   }
+
+    /************************************************************************************ */
 }
