@@ -34,9 +34,10 @@ const routes: Routes = [
   { path: 'registro', loadChildren: './global/pages/registro/registro.module#RegistroPageModule' },
   { path: 'prueba', loadChildren: './global/pages/prueba/prueba.module#PruebaPageModule' },
   { path: 'registrousuario', loadChildren: './global/pages/registrousuario/registrousuario.module#RegistrousuarioPageModule' },
-  { path: 'solicitud', loadChildren: './global/pages/solicitud/solicitud.module#SolicitudPageModule' },
+  { path: 'solicitud/:origen/:destino', loadChildren: './global/pages/solicitud/solicitud.module#SolicitudPageModule' },
   { path: 'ejm', loadChildren: './global/pages/ejm/ejm.module#EjmPageModule' },
   { path: 'maps', loadChildren: './global/pages/maps/maps.module#MapsPageModule' },
+ // { path: 'maps', loadChildren: './pages/maps/maps.module#MapsPageModule' },
   //{ path: 'modal-search-ori', loadChildren: './global/pages/modal-search-ori/modal-search-ori.module#ModalSearchOriPageModule' },
  
 ];
