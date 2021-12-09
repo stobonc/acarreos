@@ -18,7 +18,7 @@ import { ModalSearchOriPage } from './modal-search-ori.page';
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule
+    IonicModule,
   //  RouterModule.forChild(routes)
   ],
   declarations: [ModalSearchOriPage]

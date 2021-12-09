@@ -44,8 +44,8 @@ export class LoginPage {
     //  if(this.registroData.correo !="" && this.registroData.nombre !=""
      // && this.registroData.telefono !="" && this.registroData.ciudad !="" && this.registroData.password !="" ){
    
-    //let url:string="https://cors-anywhere.herokuapp.com/http://acarreos.masalcance.com/user/show";
-    let url:string="http://127.0.0.1:8000/user/show";
+    let url:string="https://acarreos.masalcance.com/services/";
+    //let url:string="http://127.0.0.1:8000/user/show";
 
       var headers = new HttpHeaders();
       headers.append("Accept", 'application/json');
